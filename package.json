@@ -1,0 +1,22 @@
+{
+  "name": "colossal-adventure-game",
+  "version": "1.0.0",
+  "description": "## Project Requirements The year is 1985. Your job is to build a text-based (console) RPG game. (Using readline-sync)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zacharybaca/colossal-adventure-game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zacharybaca/colossal-adventure-game/issues"
+  },
+  "homepage": "https://github.com/zacharybaca/colossal-adventure-game#readme",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
+}
