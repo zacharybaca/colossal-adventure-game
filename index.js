@@ -7,6 +7,31 @@ let hitPoints = 0;
 // Array to Hold Player's Inventory
 let playerInventory = [];
 
+// Function That Will Determine if an Enemy Appears
+function enemyAppears(min, max) {
+    /* Random Number to Use for Decision Making */
+    const randomNum = Math.random() * (max - min) + min;
+
+    /* If randomNum is Divisible by 3 and 6, Enemy Appears */
+    if (randomNum % 3 === 0 && randomNum % 6 === 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// Function That Will Determine if an Enemy Attacks
+function damageAmount() {
+    /* Determines Random Number of Damage Points */
+    const damage = Math.random() * (100 - 1) + 1;
+
+    /* Formula That Calcuates Remaining hitPoints From Damage */
+    hitPoints = hitPoints - damage;
+
+    /* Return Remaining HP */
+    return hitPoints;
+}
+
 // Introduction to Game
 console.log('Welcome to the ultimate adventure game experience! Follow the instructions, and explore!');
 
@@ -28,6 +53,21 @@ if (playerOption === "p" || playerOption === "print") {
         console.log('The Following is What You Currently Have in Inventory: ');
         for (let i = 0; i <= playerInventory.length; i++) {
             console.log(`${playerInventory[i]}\n`);
+        }
+    }
+} else if (playerOption === "w") {
+    // Call Enemy Appears Function
+    let appeared = enemyAppears(1, 101);
+
+    // If Enemy Appears, Call Damage Function to Calculate Damage
+    while (appeared) {
+        if (hitPoints > 0) {
+            // Call Damage Amount Function
+            let damageCaused = damageAmount();
+            hitPoints = hitPoints - damageCaused;
+        } else if (hitPoints <= 0) {
+            console.log(`Sorry ${playerName}! You Were Defeated. Better Luck Next Time!`);
+            return false;
         }
     }
 }
