@@ -75,6 +75,34 @@ function runAway() {
  }
 }
 
+// Function That Will Run If Player Decides to Attack
+function attackEnemy(randomEnemy) {
+  // Call Damage Amount Function
+  let damageCaused = damageAmount(randomEnemy);
+  if (randomEnemy.hitPoints > 0) {
+    // Damage Amount Function is Provided With The Result
+    // of Random Enemy Function As a Parameter
+    randomEnemy.hitPoints = randomEnemy.hitPoints - damageCaused;
+
+    // Display Message Regarding Who Attacked and Damage Amount
+    // Display Remaining Hit Points Left
+    console.log(
+      `You Have Attacked ${randomEnemy.name}, and took ${damageCaused} HP from them`
+    );
+    console.log(`They Currently Have ${randomEnemy.hitPoints} HP Remaining`);
+  } else if (randomEnemy.hitPoints <= 0) {
+    console.log(`You Have Defeated ${randomEnemy.name}. Awesome Job!`);
+    return false;
+  }
+
+  // Adds Damage HitPoints to Player's HP
+  hitPoints = hitPoints + damageCaused;
+
+  // Display Player's New Total HP
+  // Display Enemy's New Total HP
+  return `You Caused ${randomEnemy.name} to Lose ${damage} HP. Your HP is Now ${hitPoints}. ${randomEnemy.name}'s HP is ${randomEnemy.hitPoints}`;
+}
+
 // Function To Ask User What They Would Like to Do
 function userInteraction() {
   // Ask Player to Enter "w" to Walk, "p" or "print" to Print Status
@@ -117,34 +145,43 @@ userInteraction();
 
     // If Enemy Appears, Call Damage Function to Calculate Damage
     while (appeared) {
-        // Function That Will Run If Player Decides to Run
-        let runsAway = runAway();
+      // Random Enemy
+      let randomAttacker = randomEnemy();
 
-        if (runsAway) {
-            // If Player Escapes, Invoke userInteraction Again
-            return userInteraction();
-        } else {
-          // Random Enemy
-          let randomAttacker = randomEnemy();
+      let decision = readLine.question(`${randomAttacker.name} Just Appeared. Enter 'a' to Attack, or 'r' to Run Away.`);
 
-          if (hitPoints > 0) {
-            // Call Damage Amount Function
-            // Damage Amount Function is Provided With The Result
-            // of Random Enemy Function As a Parameter
-            let damageCaused = damageAmount(randomAttacker);
-            hitPoints = hitPoints - damageCaused;
+      // Function That Will Run If Player Decides to Run
+      let runsAway = runAway();
 
-            // Display Message Regarding Who Attacked and Damage Amount
-            // Display Remaining Hit Points Left
-            console.log(
-              `You Have Been Attacked By ${randomAttacker.name}, and they took ${damageCaused} HP from you`
-            );
-            console.log(`You Currently Have ${hitPoints} HP Remaining`);
-          } else if (hitPoints <= 0) {
-            console.log(
-              `Sorry ${playerName}! You Were Defeated. Better Luck Next Time!`
-            );
-            return false;
-          }
+      // Function That Will Run If Player Decides to Attack Enemy
+      let attack = attackEnemy(randomAttacker);
+
+      if (decision === 'a') {
+        attack;
+      }
+
+      if (runsAway && decision === 'r') {
+        // If Player Escapes, Invoke userInteraction Again
+        return userInteraction();
+      } else {
+        if (hitPoints > 0) {
+          // Call Damage Amount Function
+          // Damage Amount Function is Provided With The Result
+          // of Random Enemy Function As a Parameter
+          let damageCaused = damageAmount(randomAttacker);
+          hitPoints = hitPoints - damageCaused;
+
+          // Display Message Regarding Who Attacked and Damage Amount
+          // Display Remaining Hit Points Left
+          console.log(
+            `You Have Been Attacked By ${randomAttacker.name}, and they took ${damageCaused} HP from you`
+          );
+          console.log(`You Currently Have ${hitPoints} HP Remaining`);
+        } else if (hitPoints <= 0) {
+          console.log(
+            `Sorry ${playerName}! You Were Defeated. Better Luck Next Time!`
+          );
+          return false;
         }
+      }
     }
