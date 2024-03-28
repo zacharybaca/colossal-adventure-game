@@ -25,6 +25,22 @@ const enemies = {
     }
 }
 
+// Array of Inventory Items Awarded to Player If They
+// Defeat an Enemy
+// Array to Hold Player's Inventory
+let playerInventory = [];
+
+// Function That Will Award a Player a Particular Item
+// Depending on the Enemy That They Defeated
+function awardItem(randomEnemy) {
+  if (randomEnemy.name === 'Dracula') {
+    playerInventory.push('vampire fang');
+  } else if (randomEnemy.name === 'Puff') {
+    playerInventory.push('Dragon Tooth');
+  } else {
+    playerInventory.push('sword');
+  }
+}
 // Function to Randomly Pick An Enemy When Attacked
 function randomEnemy() {
     // Generate Random Number Between 0 and 2 for Index
@@ -32,8 +48,6 @@ function randomEnemy() {
     return enemies[randomNum];
 }
 
-// Array to Hold Player's Inventory
-let playerInventory = [];
 
 // Function That Will Determine if an Enemy Appears
 function enemyAppears(min, max) {
