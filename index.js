@@ -26,6 +26,24 @@ const enemies = [
         'name': 'Harry',
         'hitPoints': 100,
         'monsterType': 'wizard'
+    },
+
+    {
+      'name': 'Mable',
+      'hitPoints': 100,
+      'monsterType': 'banshee'
+    },
+
+    {
+      'name': 'Dorinda',
+      'hitPoints': 100,
+      'monsterType': 'troll'
+    },
+
+    {
+      'name': 'Lexi',
+      'hitPoints': 100,
+      'monsterType': 'goblin'
     }
   ]
 
@@ -39,10 +57,22 @@ let playerInventory = [];
 function awardItem(randomEnemy) {
   if (randomEnemy.name === 'Dracula') {
     playerInventory.push('vampire fang');
+    console.log('Congratulations! You Have Defeated Dracula, and Now Have "Vampire Fang" in Your Inventory');
   } else if (randomEnemy.name === 'Puff') {
     playerInventory.push('Dragon Tooth');
+    console.log('Congratulations! You Have Defeated Puff. and Now Have "Dragon Tooth" in Your Inventory');
+  } else if (randomEnemy.name === 'Mable') {
+    playerInventory.push('Claw');
+    console.log('Congratulations! You Have Defeated Mable, and Now Have "Claw" in Your Inventory');
+  } else if (randomEnemy.name === 'Dorinda') {
+    playerInventory.push('scale');
+    console.log('Congratulations! You Have Defeated Dorinda, and Now Have "Scale" in Your Inventory');
+  } else if (randomEnemy.name === 'Lexi') {
+    playerInventory.push('wand');
+    console.log('Congratulations! You Have Defeated Lexi, and Now Have "Wand" in Your Inventory');
   } else {
     playerInventory.push('sword');
+    console.log('Congratulations! You Have Defeated Harry, and Now Have "Sword" in Your Inventory');
   }
 }
 // Function to Randomly Pick An Enemy When Attacked
@@ -96,22 +126,22 @@ function runAway() {
 
 // Function That Will Run If Player Decides to Attack
 function attackEnemy(randomEnemy) {
-  // Call Damage Amount Function
-  let damageCaused = damageAmount(randomEnemy);
+  /* Determines Random Number of Damage Points */
+  const damage = Math.random() * (100 - 1) + 1;
   if (randomEnemy.hitPoints > 0) {
     // Damage Amount Function is Provided With The Result
     // of Random Enemy Function As a Parameter
-    randomEnemy.hitPoints = randomEnemy.hitPoints - damageCaused;
+    randomEnemy.hitPoints = randomEnemy.hitPoints - damage;
 
     // Display Message Regarding Who Attacked and Damage Amount
     // Display Remaining Hit Points Left
     console.log(
-      `You Have Attacked ${randomEnemy.name}, and took ${damageCaused} HP from them`
+      `You Have Attacked ${randomEnemy.name}, and took ${damage} HP from them`
     );
     console.log(`They Currently Have ${randomEnemy.hitPoints} HP Remaining`);
 
     // Call attackEnemy recursively until randomEnemy has no HP Left
-    //return attackEnemy(randomEnemy);
+    // return attackEnemy(randomEnemy);
   } else if (randomEnemy.hitPoints <= 0) {
     console.log(`You Have Defeated ${randomEnemy.name}. Awesome Job!`);
     // Call awardItem function to Award Player a Certain Item
@@ -121,11 +151,12 @@ function attackEnemy(randomEnemy) {
   }
 
   // Adds Damage HitPoints to Player's HP
-  hitPoints = hitPoints + damageCaused;
+  hitPoints = hitPoints + damage;
 
   // Display Player's New Total HP
   // Display Enemy's New Total HP
-  return `You Caused ${randomEnemy.name} to Lose ${damageCaused} HP. Your HP is Now ${hitPoints}. ${randomEnemy.name}'s HP is ${randomEnemy.hitPoints}`;
+  console.log(`You Caused ${randomEnemy.name} to Lose ${damage} HP. Your HP is Now ${hitPoints}. ${randomEnemy.name}'s HP is ${randomEnemy.hitPoints}`);
+  damageAmount(randomEnemy);
 }
 
 // Function To Ask User What They Would Like to Do
@@ -143,7 +174,7 @@ function userInteraction() {
   // Begin Loop or Logic Depending on Player's Option
   if (playerOption === "p" || playerOption === "print") {
     console.log(
-      `Hello! Welcome ${playerName}. Youre Current HP is ${hitPoints}.`
+      `Hello! Welcome ${playerName}. Your Current HP is ${hitPoints}.`
     );
     if (!playerInventory.length) {
       console.log("You Currently Do Not Have Anything in Your Inventory");
