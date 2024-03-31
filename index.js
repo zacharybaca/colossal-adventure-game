@@ -11,39 +11,39 @@ let appeared = false;
 // Object to Hold 3 Different Types of Enemies
 const enemies = [
     {
-        'name': 'Dracula',
-        'hitPoints': 100,
-        'monsterType': 'vampire'
+        name: 'Dracula',
+        hitPoints: 100,
+        monsterType: 'vampire'
     },
 
     {
-        'name': 'Puff',
-        'hitPoints': 100,
-        'monsterType': 'dragon'
+        name: 'Puff',
+        hitPoints: 100,
+        monsterType: 'dragon'
     },
 
     {
-        'name': 'Harry',
-        'hitPoints': 100,
-        'monsterType': 'wizard'
+        name: 'Harry',
+        hitPoints: 100,
+        monsterType: 'wizard'
     },
 
     {
-      'name': 'Mable',
-      'hitPoints': 100,
-      'monsterType': 'banshee'
+      name: 'Mable',
+      hitPoints: 100,
+      monsterType: 'banshee'
     },
 
     {
-      'name': 'Dorinda',
-      'hitPoints': 100,
-      'monsterType': 'troll'
+      name: 'Dorinda',
+      hitPoints: 100,
+      monsterType: 'troll'
     },
 
     {
-      'name': 'Lexi',
-      'hitPoints': 100,
-      'monsterType': 'goblin'
+      name: 'Lexi',
+      hitPoints: 100,
+      monsterType: 'goblin'
     }
   ]
 
@@ -87,7 +87,7 @@ function randomEnemy() {
 // Function That Will Determine if an Enemy Appears
 function enemyAppears(min, max) {
     /* Random Number to Use for Decision Making */
-    const randomNum = Math.round(Math.random() * (max - min) + min);
+    const randomNum = Math.floor(Math.random() * (max - min) + min);
     console.log('Rand Num: ', randomNum);
     /* If randomNum is Divisible by 3 and 6, Enemy Appears */
     if (randomNum % 3 === 0) {
@@ -100,13 +100,23 @@ function enemyAppears(min, max) {
 // Function That Will Determine if an Enemy Attacks
 function damageAmount(randomAttacker) {
     /* Determines Random Number of Damage Points */
-    const damage = Math.random() * (100 - 1) + 1;
+    const damage = Math.floor(Math.random() * (100 - 1) + 1);
 
     /* Formula That Calcuates Remaining hitPoints From Damage */
     hitPoints = hitPoints - damage;
 
     /* Add Points To Random Enemy's HP */
     randomAttacker.hitPoints = randomAttacker.hitPoints + damage;
+
+    /* Display Message Of Enemy Attacking */
+    console.log(`${randomAttacker.name} Is Fighting Back. They Took ${damage} HP From You`);
+    console.log(`${randomAttacker.name}'s HP Is ${randomAttacker.hitPoints}`);
+
+    /* Edge Case If HP Is Less Than 0, Message Will Not Display */
+    if (hitPoints > 0) {
+      console.log(`Your Current HP Is ${hitPoints}`);
+    }
+
 
     /* Return Remaining HP */
     return damage;
@@ -115,7 +125,7 @@ function damageAmount(randomAttacker) {
 // Function That Will Run If Player Decides to Run
 function runAway() {
  // Random Number for Determination, 1 for True or 2 for False
- let randomNumber = Math.random() * (3 - 1) + 1;
+ let randomNumber = Math.floor(Math.random() * (3 - 1) + 1);
 
  if (randomNumber === 1) {
     return true;
@@ -126,50 +136,49 @@ function runAway() {
 
 // Function That Will Run If Player Decides to Attack
 function attackEnemy(randomEnemy) {
+  // Save Random Enemy As Local Variable
+  let randomMonster = randomEnemy;
   /* Determines Random Number of Damage Points */
-  const damage = Math.random() * (100 - 1) + 1;
-  if (randomEnemy.hitPoints > 0) {
+  const damage = Math.floor(Math.random() * (100 - 1) + 1);
+  console.log('Random Monster HP: ', randomMonster.hitPoints);
+  console.log('Damage Occurred: ', damage);
+  if (randomMonster.hitPoints > 0) {
     // Damage Amount Function is Provided With The Result
     // of Random Enemy Function As a Parameter
-    randomEnemy.hitPoints = randomEnemy.hitPoints - damage;
+    randomMonster.hitPoints -= damage;
+
+    // Adds Damage HitPoints to Player's HP
+    hitPoints += damage;
 
     // Display Message Regarding Who Attacked and Damage Amount
     // Display Remaining Hit Points Left
+    // Display Player's New Total HP
+    // Display Enemy's New Total HP
     console.log(
-      `You Have Attacked ${randomEnemy.name}, and took ${damage} HP from them`
+      `You Caused ${randomMonster.name} to Lose ${damage} HP. Your HP is Now ${hitPoints}. ${randomMonster.name}'s HP is ${randomMonster.hitPoints}`
     );
-    console.log(`They Currently Have ${randomEnemy.hitPoints} HP Remaining`);
 
-    // Call attackEnemy recursively until randomEnemy has no HP Left
-    // return attackEnemy(randomEnemy);
-  } else if (randomEnemy.hitPoints <= 0) {
-    console.log(`You Have Defeated ${randomEnemy.name}. Awesome Job!`);
-    // Call awardItem function to Award Player a Certain Item
-    // for Defeating Their Enemy
-    awardItem(randomEnemy.name);
-    return false;
-  }
+    // Call Damage Amount Function to Have Enemy Attack
+    damageAmount(randomMonster);
 
-  // Adds Damage HitPoints to Player's HP
-  hitPoints = hitPoints + damage;
+  } //else if (randomMonster.hitPoints <= 0) {
+    //console.log(`You Have Defeated ${randomMonster.name}. Awesome Job!`);
 
-  // Display Player's New Total HP
-  // Display Enemy's New Total HP
-  console.log(`You Caused ${randomEnemy.name} to Lose ${damage} HP. Your HP is Now ${hitPoints}. ${randomEnemy.name}'s HP is ${randomEnemy.hitPoints}`);
-  damageAmount(randomEnemy);
+    //userInteraction();
+  //}
 }
 
 // Function To Ask User What They Would Like to Do
 function userInteraction() {
   // Ask Player to Enter "w" to Walk, "p" or "print" to Print Status
   console.log(
-    `Welcome ${playerName}! Please Enter 'w' to Walk, or 'p' or Type 'print' to Print Your Status`
+    `Please Enter 'w' to Walk, or 'p' or 'print' to Get Your Updated HP Status`
   );
 
   // Ask Player to Enter Their Option
   let playerOption = readLine.question(
     'Enter "w" to Walk, or "p" or Type "Print" to Print Your Status: '
-  );
+  ).toLowerCase();
 
   // Begin Loop or Logic Depending on Player's Option
   if (playerOption === "p" || playerOption === "print") {
@@ -180,7 +189,7 @@ function userInteraction() {
       console.log("You Currently Do Not Have Anything in Your Inventory");
     } else {
       console.log("The Following is What You Currently Have in Inventory: ");
-      for (let i = 0; i <= playerInventory.length; i++) {
+      for (let i = 0; i <= playerInventory.length - 1; i++) {
         console.log(`${playerInventory[i]}\n`);
       }
     }
@@ -199,15 +208,34 @@ function userInteraction() {
       if (hitPoints <= 0) {
         console.log(
           `Sorry ${playerName}! You Were Defeated. Better Luck Next Time!`
-          // Exit The Game
         );
+
+        // Exit The Game
         return false;
+      }
+
+      // Check If Enemy Still Has HP
+      // If They Don't, Show Winning Message And Call User Interaction Function
+      if (randomAttacker.hitPoints <= 0) {
+        // Call awardItem function to Award Player a Certain Item
+        // for Defeating Their Enemy
+        awardItem(randomAttacker);
+
+        // Remove Enemy From Array If Defeated
+        // Get Index Of Enemy
+        let index = enemies.indexOf(randomAttacker.name);
+
+        // Remove Enemy From Array
+        enemies.splice(index, 1);
+
+        // Call User Interaction To Start Walking Again
+        userInteraction();
       }
 
       console.log("Attacker: ", randomAttacker);
       let decision = readLine.question(
         `${randomAttacker.name} Just Appeared. Enter 'a' to Attack, or 'r' to Run Away.`
-      );
+      ).toLowerCase();
 
       // Function That Will Run If Player Decides to Run
       let runsAway = runAway();
@@ -220,7 +248,7 @@ function userInteraction() {
       if (runsAway && decision === "r") {
         // If Player Escapes, Invoke userInteraction Again
         return userInteraction();
-      } else if (hitPoints > 0) {
+      } else if (!runsAway && decision === "r" && hitPoints > 0) {
         // Call Damage Amount Function
         // Damage Amount Function is Provided With The Result
         // of Random Enemy Function As a Parameter
@@ -232,7 +260,13 @@ function userInteraction() {
         console.log(
           `You Have Been Attacked By ${randomAttacker.name}, and they took ${damageCaused} HP from you`
         );
-        console.log(`You Currently Have ${hitPoints} HP Remaining`);
+
+        // Check if Player Still Has HP
+        if (hitPoints <= 0) {
+          console.log(`You Currently Have No HP Remaining, And Have Been Defeated By ${randomAttacker.name}`);
+        } else {
+          console.log(`You Currently Have ${hitPoints} HP Remaining`);
+        }
       }
     }
   }
@@ -244,6 +278,9 @@ console.log('Welcome to the ultimate adventure game experience! Follow the instr
 
 // Ask For Player's Name
 const playerName = readLine.question('To Begin, Please Enter Your Name: ');
+
+// Welcome The Player With a Message
+console.log(`Welcome ${playerName}! To Being Exploring, Please Enter "w" On Your Keyboard And Press Enter To Begin`);
 
 // To Start Game, Invoke User Interaction Function
 userInteraction();
