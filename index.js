@@ -79,7 +79,6 @@ function awardItem(randomEnemy) {
 function randomEnemy() {
     // Generate Random Number Between 0 and 2 for Index
     let randomNum = Math.floor(Math.random() * (3 - 0) + 0);
-    console.log('Random Num in Enemy Func: ', randomNum);
     return enemies[randomNum];
 }
 
@@ -88,7 +87,6 @@ function randomEnemy() {
 function enemyAppears(min, max) {
     /* Random Number to Use for Decision Making */
     const randomNum = Math.floor(Math.random() * (max - min) + min);
-    console.log('Rand Num: ', randomNum);
     /* If randomNum is Divisible by 3 and 6, Enemy Appears */
     if (randomNum % 3 === 0) {
         return true;
@@ -115,6 +113,9 @@ function damageAmount(randomAttacker) {
     /* Edge Case If HP Is Less Than 0, Message Will Not Display */
     if (hitPoints > 0) {
       console.log(`Your Current HP Is ${hitPoints}`);
+    } else {
+      console.log('Sorry, You Do Not Have Any Current HP to Continue');
+      return false;
     }
 
 
@@ -140,8 +141,6 @@ function attackEnemy(randomEnemy) {
   let randomMonster = randomEnemy;
   /* Determines Random Number of Damage Points */
   const damage = Math.floor(Math.random() * (100 - 1) + 1);
-  console.log('Random Monster HP: ', randomMonster.hitPoints);
-  console.log('Damage Occurred: ', damage);
   if (randomMonster.hitPoints > 0) {
     // Damage Amount Function is Provided With The Result
     // of Random Enemy Function As a Parameter
@@ -160,12 +159,7 @@ function attackEnemy(randomEnemy) {
 
     // Call Damage Amount Function to Have Enemy Attack
     damageAmount(randomMonster);
-
-  } //else if (randomMonster.hitPoints <= 0) {
-    //console.log(`You Have Defeated ${randomMonster.name}. Awesome Job!`);
-
-    //userInteraction();
-  //}
+  }
 }
 
 // Function To Ask User What They Would Like to Do
@@ -205,18 +199,18 @@ function userInteraction() {
     while (appeared) {
       // Check Before Executing Logic If Player Has Enough
       // HP to Continue The Game
-      if (hitPoints <= 0) {
+      if (hitPoints <= 0 && randomAttacker.hitPoints > 0) {
         console.log(
           `Sorry ${playerName}! You Were Defeated. Better Luck Next Time!`
         );
 
         // Exit The Game
         return false;
-      }
+      } else
 
       // Check If Enemy Still Has HP
       // If They Don't, Show Winning Message And Call User Interaction Function
-      if (randomAttacker.hitPoints <= 0) {
+      if (randomAttacker.hitPoints <= 0 && hitPoints > 0) {
         // Call awardItem function to Award Player a Certain Item
         // for Defeating Their Enemy
         awardItem(randomAttacker);
